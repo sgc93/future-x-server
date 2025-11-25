@@ -3,6 +3,9 @@ import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import config from "./config/config";
+import { Code, Status } from "./types/response.enum";
+import { HttpResponse } from "./utils/response";
+import userRoutes from "./routes/user.routes";
 
 export const createApp = () => {
   const app = express();
@@ -18,17 +21,21 @@ export const createApp = () => {
   if (process.env.NODE_ENV !== "production") {
     app.use(morgan("dev"));
   }
-  
-  app.use("/users", (req, res) => {
-    res.status(200).json({ message: "Users list goeas here" });
-  })
 
-  app.get("/", (req, res) => {
-    res.status(200).json({ message: "Server is Running ..." });
-  })
+  app.use("/users", userRoutes);
 
-  app.use((req, res) => {
-    res.status(404).json({ message: "Route not found!" });
+  app.get("/", (_, res) => {
+    res
+      .status(Status.OK)
+      .json(new HttpResponse(Code.OK, Status.OK, "Server is running ..."));
+  });
+
+  app.use((_, res) => {
+    res
+      .status(Status.NOT_FOUND)
+      .json(
+        new HttpResponse(Code.NOT_FOUND, Status.NOT_FOUND, "Route not found!")
+      );
   });
 
   return app;
