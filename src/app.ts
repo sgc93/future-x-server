@@ -7,6 +7,7 @@ import { Code, Status } from "./common/response/response.enum";
 import { HttpResponse } from "./common/response/response";
 import userRouter from "./modules/users/user.routes";
 import authRouter from "./modules/auth/auth.route";
+import videoRouter from "./modules/videos/video.route";
 
 export const createApp = () => {
   const app = express();
@@ -25,6 +26,7 @@ export const createApp = () => {
 
   app.use("/api/auth", authRouter);
   app.use("/api/users", userRouter);
+  app.use("/api/videos", videoRouter);
 
   app.get("/", (_, res) => {
     res
