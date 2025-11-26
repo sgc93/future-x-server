@@ -1,13 +1,10 @@
 import { Request, Response } from "express";
-import { UserService } from "./user.service";
 import { Code, Status } from "../../common/response/response.enum";
 import { HttpResponse } from "../../common/response/response";
-
-const service = new UserService();
-
-export class UserController {
+import { userService } from "./user.service";
+class UserController {
   async create(req: Request, res: Response) {
-    const user = await service.create(req.body);
+    const user = await userService.create(req.body);
     return res
       .status(Status.CREATED)
       .json(
@@ -21,14 +18,21 @@ export class UserController {
   }
 
   async findAll(req: Request, res: Response) {
-    const users = await service.findAll();
+    const users = await userService.findAll();
     return res.json(
-      new HttpResponse(Code.OK, Status.OK, "Users fetched successfully.", users)
+      new HttpResponse(
+        Code.OK,
+        Status.OK,
+        users.length > 0
+          ? "Users fetched successfully."
+          : "No user regestered yet.",
+        users
+      )
     );
   }
 
   async findOne(req: Request, res: Response) {
-    const user = await service.findOne(Number(req.params.id));
+    const user = await userService.findOne(Number(req.params.id));
 
     if (!user) {
       res
@@ -50,7 +54,7 @@ export class UserController {
 
   async update(req: Request, res: Response) {
     const id: number = Number(req.params.id);
-    const user = await service.findOne(id);
+    const user = await userService.findOne(id);
 
     if (!user) {
       res
@@ -60,7 +64,7 @@ export class UserController {
         );
     }
 
-    const updated = await service.update(id, req.body);
+    const updated = await userService.update(id, req.body);
     return res.json(
       new HttpResponse(Code.OK, Status.OK, "User updated successfully", updated)
     );
@@ -68,7 +72,7 @@ export class UserController {
 
   async delete(req: Request, res: Response) {
     const id: number = Number(req.params.id);
-    const user = await service.findOne(id);
+    const user = await userService.findOne(id);
 
     if (!user) {
       res
@@ -78,9 +82,11 @@ export class UserController {
         );
     }
 
-    await service.delete(Number(req.params.id));
+    await userService.delete(Number(req.params.id));
     return res.json(
       new HttpResponse(Code.OK, Status.OK, "User deleted successfully")
     );
   }
 }
+
+export const userController = new UserController();
