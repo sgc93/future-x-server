@@ -5,15 +5,17 @@ dotenv.config();
 const config = {
   db: {
     host: process.env.DB_HOST || "localhost",
-    port: parseInt(process.env.DB_PORT || "3306"),
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+    port: Number(process.env.DB_PORT) || 3306,
+    username: String(process.env.DB_USERNAME),
+    password: String(process.env.DB_PASSWORD),
+    database: String(process.env.DB_DATABASE)
   },
+
   jwt: {
-    secret: process.env.JWT_SECRET || "supersecret",
-    expiresIn: process.env.JWT_EXPIRES_IN || "1d"
+    secret: String(process.env.JWT_SECRET || "supersecret"),
+    expiresIn: Number(process.env.JWT_EXPIRES_IN || "1") * 60 * 60 * 24
   },
+
   cors: {
     origin: process.env.CORS_ORIGIN || "*"
   }
