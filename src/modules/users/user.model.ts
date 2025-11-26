@@ -38,6 +38,13 @@ export default class User extends Model {
   password!: string;
 
   @Column({
+    type: DataType.ENUM("admin", "user"),
+    allowNull: false,
+    defaultValue: "user"
+  })
+  role!: string;
+
+  @Column({
     type: DataType.STRING,
     allowNull: true
   })
