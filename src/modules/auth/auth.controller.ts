@@ -10,9 +10,9 @@ class AuthController {
 
     if (!result.ok) {
       res
-        .status(Status.BAD_REQUEST)
+        .status(Status.UNAUTHORIZED)
         .json(
-          new HttpResponse(Code.BAD_REQUEST, Status.BAD_REQUEST, result.msg)
+          new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, result.msg)
         );
     }
 
@@ -33,9 +33,9 @@ class AuthController {
 
     if (!result.ok) {
       res
-        .status(Status.BAD_REQUEST)
+        .status(Status.UNAUTHORIZED)
         .json(
-          new HttpResponse(Code.BAD_REQUEST, Status.BAD_REQUEST, result.msg)
+          new HttpResponse(Code.UNAUTHORIZED, Status.UNAUTHORIZED, result.msg)
         );
     }
 
