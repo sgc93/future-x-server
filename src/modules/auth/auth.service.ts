@@ -10,8 +10,12 @@ class AuthService {
       return { ok: false, msg: "Email already exists", data: null };
     }
 
-    const user = await userService.create(data);
-    const token = signAccessToken({ id: user.id, email: user.email });
+    const user = await userService.create({...data, role: 'user'});
+    const token = signAccessToken({
+      id: user.id,
+      email: user.email,
+      role: user.role
+    });
 
     return { ok: true, msg: "Registered successfully!", data: { user, token } };
   }
@@ -30,7 +34,7 @@ class AuthService {
       return { ok: false, msg: "Incorrect credential!", data: null };
     }
 
-    const token = signAccessToken({ id: user.id, email: user.email });
+    const token = signAccessToken({ id: user.id, email: user.email, role: user.role});
     const { id, email, username, avatar } = user;
 
     return {
