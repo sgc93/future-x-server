@@ -3,9 +3,9 @@ import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import config from "./config/config";
-import { Code, Status } from "./types/response.enum";
-import { HttpResponse } from "./utils/response";
-import userRoutes from "./routes/user.routes";
+import { Code, Status } from "./common/response/response.enum";
+import { HttpResponse } from "./common/response/response";
+import userRouter from "./modules/users/user.routes";
 
 export const createApp = () => {
   const app = express();
@@ -22,7 +22,7 @@ export const createApp = () => {
     app.use(morgan("dev"));
   }
 
-  app.use("/users", userRoutes);
+  app.use("/api/users", userRouter);
 
   app.get("/", (_, res) => {
     res
