@@ -3,9 +3,9 @@ import User from "./user.model";
 class UserService {
   async create(data: any) {
     const user = await User.create(data);
-    const { id, username, email, avatar, createdAt, updatedAt } = user;
+    const { id, username, email, avatar, createdAt, updatedAt, role } = user;
 
-    return { id, username, email, avatar, createdAt, updatedAt };
+    return { id, username, email, avatar, createdAt, updatedAt, role };
   }
 
   async findAll() {
