@@ -38,6 +38,5 @@ export default class Video extends Model {
     type: DataType.STRING,
     allowNull: false
   })
-  youtube_id!: string;
-
+  youtubeId!: string;
 }
