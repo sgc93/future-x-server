@@ -1,11 +1,18 @@
 import {
+  AfterCreate,
   AllowNull,
+  BeforeCreate,
   Column,
   DataType,
+  DefaultScope,
   Model,
+  Scopes,
   Table
 } from "sequelize-typescript";
+import { hashPassword } from "../../utils/hash";
 
+@DefaultScope(() => ({ attributes: { exclude: ["password"] } }))
+@Scopes(() => ({ withPassword: { attributes: { include: ["password"] } } }))
 @Table({
   tableName: "users",
   timestamps: true
@@ -15,7 +22,7 @@ export default class User extends Model {
     type: DataType.STRING,
     allowNull: false
   })
-  name!: string;
+  username!: string;
 
   @Column({
     type: DataType.STRING,
@@ -35,4 +42,9 @@ export default class User extends Model {
     allowNull: true
   })
   avatar?: string;
+
+  @BeforeCreate
+  static async hashPass(user: User) {
+    user.password = await hashPassword(user.password);
+  }
 }
