@@ -1,10 +1,11 @@
-import bcrypt from "bcrypt";
 import User from "./user.model";
 
-export class UserService {
+class UserService {
   async create(data: any) {
-    const hashed = await bcrypt.hash(data.password, 10);
-    return User.create({ ...data, password: hashed });
+    const user = await User.create(data);
+    const { id, username, email, avatar, createdAt, updatedAt } = user;
+
+    return { id, username, email, avatar, createdAt, updatedAt };
   }
 
   async findAll() {
@@ -22,3 +23,5 @@ export class UserService {
     return User.destroy({ where: { id } });
   }
 }
+
+export const userService = new UserService();
