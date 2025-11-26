@@ -1,11 +1,27 @@
+import "reflect-metadata";
 import dotenv from "dotenv";
-import { createServer } from "./server";
+import { createApp } from "./app";
+import sequelize from "./config/database";
 
 dotenv.config();
 
-const app = createServer();
-const port = process.env.PORT ?? 5000;
+const app = createApp();
+const port = Number(process.env.PORT) || 5000;
 
-app.listen(port, async () => {
-  console.log(`Runing on port ${port}`);
-});
+const init = async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync({ alter: true });
+    console.log("Successfully connected to MySQL database");
+
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
+  } catch (error) {
+    console.error("Failed to connect with MySQL database");
+    console.error(error);
+    process.exit(1);
+  }
+};
+
+init();
