@@ -4,8 +4,8 @@ export class HttpResponse {
   private timestamp: string;
 
   constructor(
-    private code?: Code,
-    private status?: Status,
+    private code: Code,
+    private status: Status,
     private message: string,
     private data?: {}
   ) {
