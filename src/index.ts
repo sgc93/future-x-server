@@ -11,7 +11,7 @@ const port = Number(process.env.PORT) || 5000;
 const init = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     console.log("Successfully connected to MySQL database");
 
     app.listen(port, () => {
